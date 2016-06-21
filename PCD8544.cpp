@@ -9,9 +9,10 @@
 
 #include "PCD8544.h"
 
+// TODO: https://www.arduino.cc/en/Reference/SPI
 
-PCD8544::PCD8544(int PIN_RESET, int PIN_SCE, int PIN_SCLK, int PIN_DC, int PIN_SDIN, int PIN_LED,
-                 int LCD_X, int LCD_Y, int LCD_CMD, int LCD_C, int LCD_D)
+PCD8544::PCD8544(uint8_t PIN_RESET, uint8_t PIN_SCE, uint8_t PIN_SCLK, uint8_t PIN_DC, uint8_t PIN_SDIN, uint8_t PIN_LED,
+                 int LCD_X, int LCD_Y, uint8_t LCD_CMD, uint8_t LCD_C, uint8_t LCD_D)
 {
     this->PIN_RESET = PIN_RESET;
     this->PIN_SCE = PIN_SCE;
@@ -32,21 +33,27 @@ void PCD8544::initialise() {
     pinMode(this->PIN_DC,    OUTPUT);
     pinMode(this->PIN_SDIN,  OUTPUT);
     pinMode(this->PIN_SCLK,  OUTPUT);
+    if (this->PIN_LED) {
+        pinMode(this->PIN_LED, OUTPUT);
+    }
 
     digitalWrite(this->PIN_RESET, LOW);
     // delay(1);
     digitalWrite(this->PIN_RESET, HIGH);
 
     this->write(this->LCD_CMD, 0x21 );  // LCD Extended Commands.
-    this->write(this->LCD_CMD, 0xBf );  // Set LCD Vop (Contrast). //B1
-    this->write(this->LCD_CMD, 0x04 );  // Set Temp coefficent. //0x04
-    this->write(this->LCD_CMD, 0x14 );  // LCD bias mode 1:48. //0x13
-    this->write(this->LCD_CMD, 0x0C );  // LCD in normal mode. 0x0d for inverse
+    this->write(this->LCD_CMD, 0xB5 );  // Set LCD Vop (Contrast) (0xB1).
+    this->write(this->LCD_CMD, 0x04 );  // Set Temp coefficent (0x04).
+    this->write(this->LCD_CMD, 0x14 );  // LCD bias mode 1:48 (0x13).
+    this->write(this->LCD_CMD, 0x0C );  // LCD in normal mode (0x0C). 0x0D for inverse.
     this->write(this->LCD_C, 0x20);
     this->write(this->LCD_C, 0x0C);
+
+    this->clear();
+    this->gotoXY(0, 0);
 }
 
-void PCD8544::character(const char character) {
+void PCD8544::character(const unsigned char character) {
     this->write(this->LCD_D, 0x00);
     for (int index = 0; index < 5; index++) {
         this->write(this->LCD_D, ASCII_MAP[character - 0x20][index]);

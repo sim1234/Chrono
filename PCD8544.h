@@ -10,27 +10,27 @@
 class PCD8544 {
 private:
 
-    int PIN_RESET;  // LCD RST .... Pin 1
-                    // LCD Gnd .... Pin 2
-    int PIN_SCE;    // LCD CS  .... Pin 3
-    int PIN_SCLK;   // LCD SPIClk . Pin 4
-    int PIN_DC;     // LCD Dat/Com. Pin 5
-    int PIN_SDIN;   // LCD SPIDat . Pin 6
-    int PIN_LED;    // LCD Vlcd ... Pin 7
-                    // LCD Vcc .... Pin 8
+    uint8_t PIN_RESET;  // LCD RST .... Pin 1
+                        // LCD Gnd .... Pin 2
+    uint8_t PIN_SCE;    // LCD CS  .... Pin 3
+    uint8_t PIN_SCLK;   // LCD SPIClk . Pin 4
+    uint8_t PIN_DC;     // LCD Dat/Com. Pin 5
+    uint8_t PIN_SDIN;   // LCD SPIDat . Pin 6
+    uint8_t PIN_LED;    // LCD Vlcd ... Pin 7
+                        // LCD Vcc .... Pin 8
     int LCD_X;
     int LCD_Y;
-    int LCD_CMD;
-    int LCD_C;
-    int LCD_D;
+    uint8_t LCD_CMD;
+    uint8_t LCD_C;
+    uint8_t LCD_D;
 
 public:
-    PCD8544(int PIN_RESET, int PIN_SCE, int PIN_SCLK, int PIN_DC, int PIN_SDIN, int PIN_LED = 0,
-            int LCD_X = 84, int LCD_Y = 48, int LCD_CMD = 0, int LCD_C = LOW, int LCD_D = HIGH);
+    PCD8544(uint8_t PIN_RESET, uint8_t PIN_SCE, uint8_t PIN_SCLK, uint8_t PIN_DC, uint8_t PIN_SDIN, uint8_t PIN_LED = 0,
+            int LCD_X = 84, int LCD_Y = 48, uint8_t LCD_CMD = 0, uint8_t LCD_C = LOW, uint8_t LCD_D = HIGH);
     void initialise();
     void ledON();
     void ledOFF();
-    void character(const char character);
+    void character(const unsigned char character);
     void string(const char *characters);
     void clear();
     void write(char dc, char data);
@@ -133,8 +133,9 @@ static const char ASCII_MAP[][5] = {
         ,{0x00, 0x08, 0x36, 0x41, 0x00} // 7b {
         ,{0x00, 0x00, 0x7f, 0x00, 0x00} // 7c |
         ,{0x00, 0x41, 0x36, 0x08, 0x00} // 7d }
-        ,{0x10, 0x08, 0x08, 0x10, 0x08} // 7e ←
-        ,{0x00, 0x06, 0x09, 0x09, 0x06} // 7f →
+        ,{0x10, 0x08, 0x08, 0x10, 0x08} // 7e ~
+        ,{0x00, 0x06, 0x09, 0x09, 0x06} // 7f DEL
+        ,{0x07, 0xb1, 0xf2, 0xd1, 0x06} // 80 m/s
 };
 
 #endif //CHRONO_PCD8544_H
