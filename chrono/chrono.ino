@@ -73,10 +73,17 @@ void setup() {
   Serial.begin(9600);
   
   init_measurement();
+
+  pinMode(10, OUTPUT);
+  digitalWrite(10, LOW);
+  pinMode(11, OUTPUT);
+  digitalWrite(11, HIGH);
   
   pinMode(13, OUTPUT);
   digitalWrite(13, LOW);
   disp.initialise();
+  disp.ledOFF();
+  //disp.ledON();
   disp.string("elllo");
   menu.refresh();
   
