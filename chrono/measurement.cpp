@@ -32,8 +32,8 @@ void D3_ISR() {
 }
 
 void init_measurement(int PIN_2, int PIN_3) {
-    attachInterrupt(digitalPinToInterrupt(PIN_2), D2_ISR, FALLING);
-    attachInterrupt(digitalPinToInterrupt(PIN_3), D3_ISR, FALLING);
+    attachInterrupt(digitalPinToInterrupt(PIN_2), D2_ISR, RISING); // FALLING
+    attachInterrupt(digitalPinToInterrupt(PIN_3), D3_ISR, RISING); // FALLING
     timer2.setup();
 }
 

@@ -11,6 +11,21 @@
 
 // TODO: https://www.arduino.cc/en/Reference/SPI
 
+void slowShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, byte val) {
+     int i;
+     for (i = 0; i < 8; i++) {
+           if (bitOrder == LSBFIRST)
+                 digitalWrite(dataPin, !!(val & (1 << i)));
+           else      
+                 digitalWrite(dataPin, !!(val & (1 << (7 - i))));
+           digitalWrite(clockPin, HIGH);
+           __asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t"); // 1 us
+           digitalWrite(clockPin, LOW);
+           __asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t"); // 1 us
+     }
+}
+
+
 PCD8544::PCD8544(uint8_t PIN_RESET, uint8_t PIN_SCE, uint8_t PIN_SCLK, uint8_t PIN_DC, uint8_t PIN_SDIN, uint8_t PIN_LED,
                  int LCD_X, int LCD_Y, uint8_t LCD_CMD, uint8_t LCD_C, uint8_t LCD_D)
 {
@@ -75,9 +90,14 @@ void PCD8544::clear() {
 
 void PCD8544::write(char dc, char data) {
     digitalWrite(this->PIN_DC, dc);
+    //__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t"); // 1 us
     digitalWrite(this->PIN_SCE, LOW);
+    //__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t"); // 1 us
+    //slowShiftOut(this->PIN_SDIN, this->PIN_SCLK, MSBFIRST, data);
     shiftOut(this->PIN_SDIN, this->PIN_SCLK, MSBFIRST, data);
+    //__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t"); // 1 us
     digitalWrite(this->PIN_SCE, HIGH);
+    //__asm__("nop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\tnop\n\t"); // 1 us
 }
 
 void PCD8544::ledON() {

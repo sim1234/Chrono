@@ -66,7 +66,8 @@ void printFloat(float value, int places) {
 
 
 
-PCD8544 disp(8, 9, 5, 7, 6, 4);
+//PCD8544 disp(8, 9, 5, 7, 6, 4);
+PCD8544 disp(8, 7, 11, 9, 10, 12);
 Menu menu(&disp);
 
 void setup() {

@@ -14,13 +14,13 @@ class Menu {
 private:
     PCD8544* display;
 
-    uint8_t BTN_PLUS = 10;
-    uint8_t BTN_MINUS = 11;
-    uint8_t BTN_NEXT = 12;
+    uint8_t BTN_PLUS = 4;
+    uint8_t BTN_MINUS = 5;
+    uint8_t BTN_NEXT = 6;
 
-    float mass = 0.1;  // g
+    float mass = 530.0;  // mg
     float dist = 0.1;  // m
-    float mass_step = 0.01;
+    float mass_step = 10.0; // mg
     long measurement = 0;
 
     unsigned long last_measurement_running2 = 0;
